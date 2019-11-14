@@ -56,8 +56,6 @@ import java.util.Date;
 public class IdScannerActivity extends AppCompatActivity implements IdScannerModal.ModalListener {
 
     private static final String LOG_TAG = "IdScannerActivity";
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 111;
-    private static final int REQUEST_CAMERA = 222;
 
     private BlinkIdRecognizer recognizer;
     private RecognizerBundle recognizerBundle;
@@ -113,22 +111,6 @@ public class IdScannerActivity extends AppCompatActivity implements IdScannerMod
 
         recognizerRunnerView.create();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(ContextCompat.checkSelfPermission(IdScannerActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(IdScannerActivity.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            REQUEST_WRITE_EXTERNAL_STORAGE);
-                }
-                if(ContextCompat.checkSelfPermission(IdScannerActivity.this,
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(IdScannerActivity.this,
-                            new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-                }
-            }
-        }, 1000);
     }
 
     private final ScanResultListener scanResultListener = new ScanResultListener() {

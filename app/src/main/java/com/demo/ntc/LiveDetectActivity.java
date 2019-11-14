@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +19,7 @@ import com.appliedrec.verid.core.AuthenticationSessionSettings;
 import com.appliedrec.verid.core.Bearing;
 import com.appliedrec.verid.core.FaceDetectionRecognitionFactory;
 import com.appliedrec.verid.core.FaceDetectionRecognitionSettings;
+import com.appliedrec.verid.core.IRecognizable;
 import com.appliedrec.verid.ui.VerIDSessionIntent;
 
 import java.io.File;
@@ -30,6 +30,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class LiveDetectActivity extends AppCompatActivity {
 
