@@ -33,22 +33,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            REQUEST_WRITE_EXTERNAL_STORAGE);
-                }
-                if(ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-                }
-            }
-        }, 1000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if(ContextCompat.checkSelfPermission(MainActivity.this,
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+//                    ActivityCompat.requestPermissions(MainActivity.this,
+//                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                            REQUEST_WRITE_EXTERNAL_STORAGE);
+//                }
+//                if(ContextCompat.checkSelfPermission(MainActivity.this,
+//                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+//                    ActivityCompat.requestPermissions(MainActivity.this,
+//                            new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+//                }
+//            }
+//        }, 1000);
 
     }
 

@@ -4,15 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
@@ -51,6 +56,8 @@ import java.util.Date;
 public class IdScannerActivity extends AppCompatActivity implements IdScannerModal.ModalListener {
 
     private static final String LOG_TAG = "IdScannerActivity";
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 111;
+    private static final int REQUEST_CAMERA = 222;
 
     private BlinkIdRecognizer recognizer;
     private RecognizerBundle recognizerBundle;
@@ -105,6 +112,23 @@ public class IdScannerActivity extends AppCompatActivity implements IdScannerMod
         setupPointView();
 
         recognizerRunnerView.create();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(ContextCompat.checkSelfPermission(IdScannerActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(IdScannerActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_WRITE_EXTERNAL_STORAGE);
+                }
+                if(ContextCompat.checkSelfPermission(IdScannerActivity.this,
+                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(IdScannerActivity.this,
+                            new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+                }
+            }
+        }, 1000);
     }
 
     private final ScanResultListener scanResultListener = new ScanResultListener() {
@@ -127,6 +151,7 @@ public class IdScannerActivity extends AppCompatActivity implements IdScannerMod
     public void onClick(View view) {
         if(view.getId() == R.id.nextBtn){
             storeImage("face", image);
+            recognizerRunnerView.resumeScanning(true);
             Intent intent = new Intent(IdScannerActivity.this, LiveDetectActivity.class);
             intent.putExtra("IdScanner.IMAGE_URI", saveImage);
             startActivity(intent);
