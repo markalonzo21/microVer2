@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -17,7 +18,8 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import com.appliedrec.rxverid.RxVerID;
 import com.appliedrec.verid.core.AuthenticationSessionSettings;
 import com.appliedrec.verid.core.Bearing;
-import com.appliedrec.verid.core.IRecognizable;
+import com.appliedrec.verid.core.FaceDetectionRecognitionFactory;
+import com.appliedrec.verid.core.FaceDetectionRecognitionSettings;
 import com.appliedrec.verid.ui.VerIDSessionIntent;
 
 import java.io.File;
@@ -28,9 +30,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class LiveDetectActivity extends AppCompatActivity {
 
@@ -62,7 +61,16 @@ public class LiveDetectActivity extends AppCompatActivity {
             uriImage.setText(imageUri.toString());
         }
 
-        rxVerID = new RxVerID.Builder(this).build();
+        FaceDetectionRecognitionSettings settings = new FaceDetectionRecognitionSettings(null);
+        // Enable RenderScript
+        settings.setEnableRenderScript(true);
+        // Create face detection and recognition factory instance
+        FaceDetectionRecognitionFactory faceDetectionRecognitionFactory = new FaceDetectionRecognitionFactory(this, null, settings);
+        // Build an instance of RxVerID
+        rxVerID = new RxVerID.Builder(this)
+                .setFaceDetectionFactory(faceDetectionRecognitionFactory)
+                .setFaceRecognitionFactory(faceDetectionRecognitionFactory)
+                .build();
 
         Disposable disposable = rxVerID.detectRecognizableFacesInImage(imageUri, 1)
                 .firstOrError()
